@@ -1,6 +1,11 @@
 ## ModifyJSON
 
-A simple Python script that provides functionality to modify JSON files by adding, replacing, or removing keys and values. 
+A simple Python utility for modifying JSON files with support for:
+- Adding new values
+- Replacing existing values
+- Removing keys and values
+- Handling deeply nested JSON structures using bracket notation
+- Command line and programmatic interfaces
 
 ### Usage
 
