@@ -1,0 +1,14 @@
+# Standard ignore files for Python projects
+*__pycache__/
+*.pyc
+*.pyo
+
+# Ignore the virtual environment directory
+venv/
+
+# Ignore the Jupyter Notebook checkpoints directory
+*.ipynb_checkpoints/
+
+# pytest
+*.pytest_cache/
+
