@@ -29,8 +29,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Install pytest and other required packages directly
-        python -m pip install pytest
+        python -m pip install -r tests/requirements.txt
 
     - name: Run tests
       run: |
