@@ -7,7 +7,7 @@ import sys
 import re
 import argparse
 
-def modify_json_files(file_pattern, path_str, new_value, mode):
+def modify_json_files(file_pattern, path_str, new_value, mode, output_file=None):
     """
     Find and modify JSON files matching the pattern.
     
@@ -17,6 +17,7 @@ def modify_json_files(file_pattern, path_str, new_value, mode):
         new_value: The new value to set at the specified path (not used for remove mode)
         mode (str): 'add' to add keys if they don't exist, 'replace' to only modify existing keys,
                    'remove' to delete the specified path
+        output_file (str): Name of the output file to save the modified JSON. If None, overwrite the original file.
     """
     # Parse the path string into keys
     path_keys = re.findall(r'\[(.*?)\]', path_str)
@@ -110,10 +111,13 @@ def modify_json_files(file_pattern, path_str, new_value, mode):
                 # Set the new value
                 current[final_key] = new_value
             
-            # Write the modified data back to the file
-            with open(file_path, 'w') as f:
+            # Write the modified data to the output file
+            output_path = output_file if output_file else file_path
+            with open(output_path, 'w') as f:
                 json.dump(data, f, indent=2)
             
+            print(f"Modified file written to: {output_path}")
+        
         except KeyError as e:
             if mode == 'replace':
                 print(f"Error processing {file_path}: {e}")
@@ -135,6 +139,9 @@ def main():
     # Make new_value optional only when using --remove
     parser.add_argument('new_value', nargs='?', help='New value to set at the specified path (not used with --remove)')
     
+    # Add an optional argument for the output file
+    parser.add_argument('--output-file', help='Name of the output file to save the modified JSON. If not provided, original files are overwritten.')
+    
     args = parser.parse_args()
     
     # Validate arguments
@@ -147,7 +154,7 @@ def main():
     mode = 'remove' if args.remove else ('add' if args.add else 'replace')
     
     try:
-        modify_json_files(args.file_pattern, args.json_path, args.new_value, mode)
+        modify_json_files(args.file_pattern, args.json_path, args.new_value, mode, args.output_file)
         print("All files processed successfully.")
     except Exception as e:
         print(f"Process failed: {e}")
